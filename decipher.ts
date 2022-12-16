@@ -77,6 +77,6 @@ function getDefinition(source: string, name: string) {
 }
 
 function getArrayDefinition(source: string, name: string) {
-  const regex = new RegExp(`${name}=((.|\\s)+?)(?=];)];`);
-  return `const ${source.match(regex)![0]}`;
+  const regex = new RegExp(` ${name}=((.|\\s)+?)(?=];)];`);
+  return `const${source.match(regex)![0]}`;
 }
