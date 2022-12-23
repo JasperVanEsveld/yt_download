@@ -1,5 +1,6 @@
 import { Format, VideoInfo } from "./types.ts";
 import { BASE_URL } from "./mod.ts";
+import { getValue } from "./parse/mod.ts";
 
 export async function decipherFormatURLs(info: VideoInfo, playerURL: string) {
   const url = new URL(playerURL, BASE_URL);
@@ -31,33 +32,32 @@ function setFormatURL(
 }
 
 function getDecipherFunction(playerFile: string) {
-  const decipherFuncName = playerFile.match(
-    /c=([^(]+)\(decodeURIComponent/
-  )![1];
+  const name = playerFile.match(/c=([^(]+)\(decodeURIComponent/)![1];
 
-  const decipherFunc = getDefinition(playerFile, decipherFuncName);
-
+  const decipherFunc = define(playerFile, name);
   const unknownVars = extractVars(decipherFunc);
   unknownVars.delete("a");
 
   const definitions = [...unknownVars]
-    .map((varName) => getDefinition(playerFile, varName))
+    .map((varName) => define(playerFile, varName))
     .join("");
 
-  const result = `${definitions}${decipherFunc}return ${decipherFuncName}(sig);`;
+  const result = `${definitions};${decipherFunc}return ${name}(sig);`;
+  console.log(result);
   return new Function("sig", result) as (sig: string) => string;
 }
 
 function getNFunction(playerFile: string) {
-  let nFuncName = playerFile.match(/\("n"\)\)&&\(b=([^(]+)\(b\)/)![1];
-  if (nFuncName.includes("[")) {
-    const def = getArrayDefinition(playerFile, nFuncName.split("[")[0]);
-    const from = def.indexOf("[") + 1;
-    const to = def.indexOf("]");
-    nFuncName = def.substring(from, to);
+  let name = playerFile.match(/\("n"\)\)&&\(b=([^(]+)\(b\)/)![1];
+
+  if (name.includes("[")) {
+    const value = getValue(playerFile, name.split("[")[0]);
+    const from = value.indexOf("[") + 1;
+    const to = value.indexOf("]");
+    name = value.substring(from, to);
   }
-  const nFunc = getDefinition(playerFile, nFuncName);
-  const result = `${nFunc}return ${nFuncName}(ncode);`;
+  const definition = define(playerFile, name);
+  const result = `${definition};return ${name}(ncode);`;
   return new Function("ncode", result) as (sig: string) => string;
 }
 
@@ -71,12 +71,6 @@ function extractVars(func: string) {
   return unknownVars;
 }
 
-function getDefinition(source: string, name: string) {
-  const regex = new RegExp(`${name}=((.|\\s)+?)(?=};)};`);
-  return `const ${source.match(regex)![0]}`;
-}
-
-function getArrayDefinition(source: string, name: string) {
-  const regex = new RegExp(` ${name}=((.|\\s)+?)(?=];)];`);
-  return `const${source.match(regex)![0]}`;
+function define(source: string, name: string) {
+  return `const ${name} = ${getValue(source, name)};`;
 }
