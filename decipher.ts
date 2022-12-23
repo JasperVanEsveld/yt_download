@@ -43,7 +43,6 @@ function getDecipherFunction(playerFile: string) {
     .join("");
 
   const result = `${definitions};${decipherFunc}return ${name}(sig);`;
-  console.log(result);
   return new Function("sig", result) as (sig: string) => string;
 }
 
