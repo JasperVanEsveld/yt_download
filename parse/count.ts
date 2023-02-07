@@ -50,7 +50,7 @@ export function* count(body: string) {
         }
         break;
       case "'":
-        if (!state.string) {
+        if (doCount()) {
           state.string = true;
           state.stringStart = "'";
         } else if (state.stringStart === "'") {
@@ -58,7 +58,7 @@ export function* count(body: string) {
         }
         break;
       case '"':
-        if (!state.string) {
+        if (doCount()) {
           state.string = true;
           state.stringStart = '"';
         } else if (state.stringStart === '"') {
@@ -66,7 +66,7 @@ export function* count(body: string) {
         }
         break;
       case "`":
-        if (!state.string) {
+        if (doCount()) {
           state.string = true;
           state.template = true;
           state.stringStart = "`";
@@ -106,6 +106,13 @@ export function* count(body: string) {
       case "\\":
         if (state.string || (state.regex && !state.regexCharSet)) {
           state.escaped = true;
+        }
+        break;
+      case "/":
+        if (doCount() && [",", "(", "="].includes(state.previous)) {
+          state.regex = true;
+        } else if (state.regex && !state.regexCharSet) {
+          state.regex = false;
         }
         break;
     }
