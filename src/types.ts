@@ -1,3 +1,9 @@
+export type Options = {
+  hasVideo?: boolean;
+  hasAudio?: boolean;
+  mimeType?: string;
+};
+
 export type VideoInfo = {
   attestation: {
     playerAttestationRenderer: PlayerAttestationRenderer;

@@ -5,6 +5,17 @@ It is losely based on [ytdl-core](https://github.com/fent/node-ytdl-core), for w
 
 This is a rewrite keeping only the core functionality, hopefully making it easier to maintain.
 
+## Install
+The main use of yt_download is as a library, but when installed it can also be used as a command line tool.
+
+```console
+deno install --allow-net --allow-write -n yt_download https://deno.land/x/yt_download@1.4/mod.ts
+
+yt_download https://www.youtube.com/watch?v=rEq1Z0bjdwc ./hello_there.mp4
+yt_download https://www.youtube.com/watch?v=rEq1Z0bjdwc ./hello_there_muted.mp4 --no-audio
+yt_download https://www.youtube.com/watch?v=rEq1Z0bjdwc ./hello_there.mp3 --no-video --mime-type='audio/webm; codecs=""opus""'
+```
+
 ## Basic Usage
 ```js
 import { ytDownload } from "https://deno.land/x/yt_download/mod.ts";

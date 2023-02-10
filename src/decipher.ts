@@ -22,10 +22,11 @@ function setFormatURL(
 ) {
   const params = new URLSearchParams(format.url || format.signatureCipher);
   const { s, sp, url } = Object.fromEntries(params);
-  if (s === undefined) return format.url;
-  const components = new URL(decodeURIComponent(url));
-  const deciphered = decipher(s);
-  components.searchParams.set(sp || "signature", deciphered);
+  const components = new URL(decodeURIComponent(url || format.url));
+  if (s !== undefined) {
+    const deciphered = decipher(s);
+    components.searchParams.set(sp || "signature", deciphered);
+  }
   const n = components.searchParams.get("n")!;
   components.searchParams.set("n", nCode(n));
   format.url = components.toString();
