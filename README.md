@@ -9,16 +9,26 @@ This is a rewrite keeping only the core functionality, hopefully making it easie
 The main use of yt_download is as a library, but when installed it can also be used as a command line tool.
 
 ```console
-deno install --allow-net --allow-write -n yt_download https://deno.land/x/yt_download@1.4/mod.ts
+deno install --allow-net --allow-write -n yt_download https://deno.land/x/yt_download@1.5/mod.ts
 
 yt_download https://www.youtube.com/watch?v=rEq1Z0bjdwc ./hello_there.mp4
 yt_download rEq1Z0bjdwc ./hello_there_muted.mp4 --no-audio
 yt_download rEq1Z0bjdwc ./hello_there.mp3 --no-video --mime-type='audio/webm; codecs=""opus""'
 ```
 
+Or even as a desktop application using [deuteron](https://github.com/JasperVanEsveld/deuteron)!
+
+Either download the latest binary from the [releases](https://github.com/JasperVanEsveld/deuteron/releases)
+or compile it yourself using deuteron:
+```
+deuteron --webview-url "https://jaspervanesveld.github.io/yt_download/" --allow-net https://deno.land/x/yt_download@1.5/mod.ts
+```
+
+![image](https://user-images.githubusercontent.com/9715316/221700238-1e2a32dc-24e1-43a3-87cd-64d4c65c1961.png)
+
 ## Basic Usage
 ```js
-import { ytDownload } from "https://deno.land/x/yt_download/mod.ts";
+import { ytDownload } from "https://deno.land/x/yt_download@1.5/mod.ts";
 
 // Gets a download stream for a given video ID.
 // The highest bitrate is chosen for the given options.
@@ -52,7 +62,7 @@ await ytDownload("rEq1Z0bjdwc", {
 The options only provide common ways to filter.
 But it is possible to manually filter the available formats.
 ```js
-import { getFormats, getDataStream } from "https://deno.land/x/yt_download/mod.ts";
+import { getFormats, getDataStream } from "https://deno.land/x/yt_download@1.5/mod.ts";
 const formats = await getFormats("rEq1Z0bjdwc");
 const stream = await getDataStream(formats[2]); // Select the format you want to download
 ```
