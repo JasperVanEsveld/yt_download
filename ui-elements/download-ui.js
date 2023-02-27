@@ -67,7 +67,8 @@ export class DownloadUI extends LitElement {
   }
 
   render() {
-    return html`<search-input
+    return html`<h1>YT Downloader</h1>
+      <search-input
         @search=${(e) => {
           this.query = e.detail;
           this.fetchDownloadURL();
