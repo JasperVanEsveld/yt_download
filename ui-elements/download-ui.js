@@ -55,15 +55,9 @@ export class DownloadUI extends LitElement {
   }
 
   download() {
-    const link = document.createElement("a");
     const download_url = new URL("http://localhost:9339/download");
     download_url.searchParams.set("url", this.url);
-    link.href = download_url.toString();
-    link.download = ``;
-    link.target = "_blank";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    document.location = download_url.toString();
   }
 
   render() {
