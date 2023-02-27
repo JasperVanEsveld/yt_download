@@ -18,7 +18,7 @@ yt_download rEq1Z0bjdwc ./hello_there.mp3 --no-video --mime-type='audio/webm; co
 
 Or even as a desktop application using [deuteron](https://github.com/JasperVanEsveld/deuteron)!
 
-Either download the latest binary from the [releases](https://github.com/JasperVanEsveld/deuteron/releases)
+Either download the latest binary from the [releases](https://github.com/JasperVanEsveld/yt_download/releases)
 or compile it yourself:
 ```
 deuteron --title yt-download --webview-url "https://jaspervanesveld.github.io/yt_download/" --allow-net https://deno.land/x/yt_download@1.5/mod.ts
