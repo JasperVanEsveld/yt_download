@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YouTube Downloader</title>
+    <style>
+      :root {
+        --m1-color: #1c1c1c;
+        --m2-color: #323232;
+        --m3-color: #cbcbcb;
+        --m4-color: #ffffff;
+        --a1-color: #e5a00d;
+        --m1-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      }
+      * {
+        margin: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+      html,
+      body {
+        overflow: hidden;
+        height: 100%;
+      }
+      body {
+        display: grid;
+        place-items: center;
+        align-items: center;
+        justify-items: center;
+        background-color: #7a0000;
+      }
+    </style>
+    <script defer src="./elements/mod.js" type="module"></script>
+  </head>
+  <body>
+    <download-ui></download-ui>
+  </body>
+</html>
