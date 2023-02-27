@@ -20,7 +20,10 @@ export async function ytDownload(
   return getDataStream(formats[0]);
 }
 
-export async function getVideoInfo(id: string): Promise<undefined | VideoInfo> {
+export async function getVideoInfo(
+  source: string
+): Promise<undefined | VideoInfo> {
+  const id = toID(source);
   try {
     const url = `${BASE_URL}${id}&hl=en`;
     const resp = await fetch(url, {
@@ -42,9 +45,10 @@ export async function getVideoInfo(id: string): Promise<undefined | VideoInfo> {
 }
 
 export async function getFormats(
-  id: string,
+  source: string,
   { hasAudio, hasVideo, mimeType }: Options = {}
 ) {
+  const id = toID(source);
   const info = await getVideoInfo(id);
   if (info === undefined) {
     throw "Video not found";
