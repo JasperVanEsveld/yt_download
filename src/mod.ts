@@ -20,28 +20,22 @@ export async function ytDownload(
   return getDataStream(formats[0]);
 }
 
-export async function getVideoInfo(
-  source: string
-): Promise<undefined | VideoInfo> {
+export async function getVideoInfo(source: string): Promise<VideoInfo> {
   const id = toID(source);
-  try {
-    const url = `${BASE_URL}${id}&hl=en`;
-    const resp = await fetch(url, {
-      headers: {
-        "User-Agent": USER_AGENT,
-      },
-    });
-    const html = await resp.text();
-    const responses = html.match(
-      /ytInitialPlayerResponse = ([\S\s]+)?(?=;var meta)/
-    );
-    const playerInfo = JSON.parse(responses![1]);
-    const playerURL = html.match(/"jsUrl":"([^"]+)"/)![1];
-    await decipherFormatURLs(playerInfo, playerURL);
-    return playerInfo;
-  } catch {
-    return undefined;
-  }
+  const url = `${BASE_URL}${id}&hl=en`;
+  const resp = await fetch(url, {
+    headers: {
+      "User-Agent": USER_AGENT,
+    },
+  });
+  const html = await resp.text();
+  const responses = html.match(
+    /ytInitialPlayerResponse = ([\S\s]+)?(?=;var meta)/
+  );
+  const playerInfo = JSON.parse(responses![1]);
+  const playerURL = html.match(/"jsUrl":"([^"]+)"/)![1];
+  await decipherFormatURLs(playerInfo, playerURL);
+  return playerInfo;
 }
 
 export async function getFormats(
@@ -50,9 +44,6 @@ export async function getFormats(
 ) {
   const id = toID(source);
   const info = await getVideoInfo(id);
-  if (info === undefined) {
-    throw "Video not found";
-  }
   const result = [
     ...info.streamingData.adaptiveFormats,
     ...info.streamingData.formats,
