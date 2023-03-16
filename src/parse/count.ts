@@ -1,3 +1,5 @@
+const skip = ["\n", "\r", "\r\n"];
+
 /**
  * Per character returns the amount of brackets/braces that still need to be closed.
  *
@@ -29,6 +31,9 @@ export function* count(body: string) {
     res++;
     if (state.escaped) {
       state.escaped = false;
+      continue;
+    }
+    if (skip.includes(char)) {
       continue;
     }
     switch (char) {
