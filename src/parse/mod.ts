@@ -53,10 +53,11 @@ function matchLiteral(source: string) {
 }
 
 function trimStart(source: string, name: string) {
+  const assignment = `${name}=`;
   const start = findIndex(
     source,
     (source) => {
-      const match = `var ${name}=`;
+      const match = `var ${assignment}`;
       const idx = source.indexOf(match);
       if (idx == -1) {
         return;
@@ -64,12 +65,13 @@ function trimStart(source: string, name: string) {
       return idx + match.length;
     },
     (source) => {
-      const match = `${name}=`;
-      const idx = source.indexOf(match);
+      const match = new RegExp(`[^\\w]${assignment}`);
+
+      const idx = source.search(match);
       if (idx == -1) {
         return;
       }
-      return idx + match.length;
+      return idx + assignment.length + 1;
     }
   );
   if (start === undefined) {
