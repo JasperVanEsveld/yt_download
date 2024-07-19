@@ -48,7 +48,7 @@ function getDecipherFunction(playerFile: string) {
 }
 
 function getNFunction(playerFile: string) {
-  let name = playerFile.match(/\("n"\)\)&&\(b=([^(]+)\(b\)/)![1];
+  let name = playerFile.match(/\((?:"n"|.)\)\)&&\(.=([^(]+)\(.\)/)![1];
 
   if (name.includes("[")) {
     const value = getValue(playerFile, name.split("[")[0]);
