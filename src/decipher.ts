@@ -47,8 +47,10 @@ function getDecipherFunction(playerFile: string) {
   return new Function("sig", result) as (sig: string) => string;
 }
 
+const preprend_list = "b=a.j.n||null)&&";
+
 function getNFunction(playerFile: string) {
-  let name = playerFile.match(/\((?:"n"|.)\)\)&&\(.=([^(]+)\(.\)/)![1];
+  let name = playerFile.match(/null\)+&&\(.=([^(]+)/)![1];
 
   if (name.includes("[")) {
     const value = getValue(playerFile, name.split("[")[0]);
@@ -56,6 +58,7 @@ function getNFunction(playerFile: string) {
     const to = value.indexOf("]");
     name = value.substring(from, to);
   }
+
   const definition = define(playerFile, name);
   const result = `${definition};return ${name}(ncode);`;
   return new Function("ncode", result) as (sig: string) => string;
